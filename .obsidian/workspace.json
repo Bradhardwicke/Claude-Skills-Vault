@@ -1,0 +1,237 @@
+{
+  "main": {
+    "id": "8ec05dcf56de31a1",
+    "type": "split",
+    "children": [
+      {
+        "id": "56b118abbec22df4",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "2d59559c0f01d607",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Project Context.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Project Context"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "76bc26d492ab6fa3",
+    "type": "split",
+    "children": [
+      {
+        "id": "c3d0af07d39163b4",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "e3fc7e5659ac86ea",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "62a2586fd587edf8",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "01cc248b81d3b633",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "d49faa3bf6cb5607",
+    "type": "split",
+    "children": [
+      {
+        "id": "67535711bfc33c1c",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "d4d7b537c790c69c",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "Skills/Obsidian/Obsidian Markdown.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for Obsidian Markdown"
+            }
+          },
+          {
+            "id": "355d3f2a7e0f6e5a",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "Skills/Obsidian/Obsidian Markdown.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from Obsidian Markdown"
+            }
+          },
+          {
+            "id": "545c621a0cc71bef",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "0b57f20da8d3ca66",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "All properties"
+            }
+          },
+          {
+            "id": "6edf90fe1ea205f4",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "Skills/Obsidian/Obsidian Markdown.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline of Obsidian Markdown"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "bases:Create new base": false,
+      "templater-obsidian:Templater": false
+    }
+  },
+  "active": "2d59559c0f01d607",
+  "lastOpenFiles": [
+    "Skills/Claude Skills Marketplace/SDLC/SDLC Cross Role.md",
+    "Skills/Claude Skills Marketplace/SDLC/SDLC Cross Role.md.tmp.21984.283c8a072b00",
+    "Skills/Claude Skills Marketplace/QA Engineer/QA Toolkit.md",
+    "Skills/Claude Skills Marketplace/QA Engineer/QA Toolkit.md.tmp.21984.6a992a91a1a1",
+    "Skills/Claude Skills Marketplace/QA Engineer/QA Accessibility Testing.md",
+    "Skills/Claude Skills Marketplace/QA Engineer/QA Accessibility Testing.md.tmp.21984.f3a84eb26922",
+    "Skills/Claude Skills Marketplace/QA Engineer/QA Quality Metrics.md",
+    "Skills/Claude Skills Marketplace/QA Engineer/QA Quality Metrics.md.tmp.21984.ed07b02d0921",
+    "Skills/Claude Skills Marketplace/QA Engineer/QA API Testing.md",
+    "Skills/Claude Skills Marketplace/QA Engineer/QA API Testing.md.tmp.21984.3558ad3bc119",
+    "Skills/Claude Skills Marketplace/QA Engineer/QA Performance Testing.md",
+    "Skills/Claude Skills Marketplace/QA Engineer/QA Performance Testing.md.tmp.21984.f5a988314125",
+    "Skills/Claude Skills Marketplace/QA Engineer/QA Automation.md",
+    "Skills/Claude Skills Marketplace/QA Engineer/QA Automation.md.tmp.21984.12f49bf6e2c3",
+    "Skills/Claude Skills Marketplace/QA Engineer/QA Functional Testing.md",
+    "Skills/Claude Skills Marketplace/QA Engineer/QA Functional Testing.md.tmp.21984.c7060dc7f99c",
+    "Skills/Claude Skills Marketplace/QA Engineer/QA Test Strategy.md",
+    "Skills/Claude Skills Marketplace/QA Engineer/QA Test Strategy.md.tmp.21984.1814a458474f",
+    "Skills/Claude Skills Marketplace/Designer/Designer Toolkit.md",
+    "Skills/Claude Skills Marketplace/Designer/Designer Toolkit.md.tmp.21984.1274a0e137a2",
+    "Skills/Claude Skills Marketplace/Designer/Designer Ops.md",
+    "Skills/Claude Skills Marketplace/Designer/Designer Prototyping Testing.md",
+    "Skills/Claude Skills Marketplace/Designer/Designer Interaction.md",
+    "Skills/Claude Skills Marketplace/Designer/Designer UI Design.md",
+    "Skills/Claude Skills Marketplace/Designer/Designer UX Strategy.md",
+    "Skills/Claude Skills Marketplace/Designer/Designer Systems.md",
+    "Skills/Claude Skills Marketplace/Designer/Designer Research.md",
+    "Skills/Claude Skills Marketplace/Security/Security Toolkit.md",
+    "Skills/Claude Skills Marketplace/Security/Security Operations.md",
+    "Skills/Claude Skills Marketplace/Security/Security Incident Response.md",
+    "Skills/Claude Skills Marketplace/Security/Security Compliance.md",
+    "Skills/Claude Skills Marketplace/Security/Security Infrastructure.md",
+    "Skills/Claude Skills Marketplace/Security/Security Application Security.md",
+    "Skills/Claude Skills Marketplace/Security/Security Secure Development.md",
+    "Skills/Claude Skills Marketplace/Security/Security Threat Modeling.md",
+    "Skills/Claude Skills Marketplace/Tech Lead/Tech Lead Toolkit.md",
+    "Untitled.canvas",
+    "SharePoint uplift/icons/rectangle4500.svg",
+    "SharePoint uplift/icons/QuickLink-ProjectRegister.svg",
+    "SharePoint uplift/icons/rectangle1.svg",
+    "SharePoint uplift/icons/QuickLink-ProjectRegister.png",
+    "SharePoint uplift/icons/QuickLink-KnowledgeBase.svg",
+    "SharePoint uplift/icons/QuickLink-KnowledgeBase.png",
+    "SharePoint uplift/icons/QuickLink-ColleagueRecognition.svg",
+    "SharePoint uplift/icons/QuickLink-ColleagueRecognition.png",
+    "SharePoint uplift/icons/QuickLink-ClientDirectory.svg",
+    "SharePoint uplift/icons/playicon.svg"
+  ]
+}

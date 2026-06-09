@@ -1,0 +1,27 @@
+# Windows
+Thumbs.db
+Desktop.ini
+
+# VS Code
+.vscode/settings.json
+.vscode/launch.json
+
+# Node
+node_modules/
+
+# Python
+__pycache__/
+*.pyc
+.env
+venv/
+
+# General secrets
+*.key
+*.pem
+secrets.json
+config.local.*
+
+# Large files
+*.zip
+*.tar.gz
+*.exe

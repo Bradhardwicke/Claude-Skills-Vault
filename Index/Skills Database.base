@@ -1,0 +1,72 @@
+filters:
+  and:
+    - file.ext == "md"
+    - file.hasTag("skill")
+formulas:
+  invoke: 'if(skill-id, "skill: \"" + skill-id + "\"", "")'
+properties:
+  name:
+    displayName: Skill ID
+  plugin:
+    displayName: Plugin
+  category:
+    displayName: Category
+  formula.invoke:
+    displayName: Invoke
+views:
+  - type: table
+    name: All Skills
+    groupBy:
+      property: category
+      direction: ASC
+    order:
+      - file.name
+      - category
+      - plugin
+      - formula.invoke
+  - type: table
+    name: Anthropic
+    filters:
+      and:
+        - category == "Anthropic"
+    order:
+      - file.name
+      - formula.invoke
+  - type: table
+    name: Data
+    filters:
+      and:
+        - category == "Data"
+    order:
+      - file.name
+      - formula.invoke
+  - type: table
+    name: Design
+    filters:
+      and:
+        - category == "Design"
+    order:
+      - file.name
+      - formula.invoke
+  - type: table
+    name: Operations
+    filters:
+      and:
+        - category == "Operations"
+    order:
+      - file.name
+      - formula.invoke
+  - type: table
+    name: Sales
+    filters:
+      and:
+        - category == "Sales"
+    order:
+      - file.name
+      - formula.invoke
+  - type: cards
+    name: Card View
+    order:
+      - file.name
+      - plugin
+      - formula.invoke

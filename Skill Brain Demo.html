@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Claude's Skill Brain</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#08080f;overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,'Inter',sans-serif}
+canvas{display:block}
+#ui{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none}
+.title{position:absolute;top:28px;width:100%;text-align:center}
+.title h1{font-size:28px;font-weight:700;color:#fff;letter-spacing:-0.5px}
+.title p{font-size:13px;color:rgba(255,255,255,0.35);margin-top:6px;letter-spacing:0.5px}
+#status{position:absolute;bottom:26px;width:100%;text-align:center;font-size:12px;color:rgba(255,255,255,0.3);letter-spacing:0.4px;transition:color 0.4s}
+#status.active{color:rgba(217,119,87,0.8)}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="ui">
+  <div class="title">
+    <h1>Claude's Skill Brain</h1>
+    <p>71 skills &nbsp;·&nbsp; Obsidian Vault &nbsp;·&nbsp; Semantic Lookup</p>
+  </div>
+  <div id="status">Hover to explore &nbsp;·&nbsp; Click a skill to trigger a lookup</div>
+</div>
+
+<script>
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+const statusEl = document.getElementById('status');
+
+const CC = '#D97757'; // Claude coral
+let W, H, cx, cy, R_CAT, R_SKILL;
+
+const CATS = [
+  {id:'docs',   label:'Documents',      color:'#60A5FA', skills:['docx','xlsx','pptx','pdf']},
+  {id:'data',   label:'Data & Analytics',color:'#34D399', skills:['analyze','write query','visualise','dashboard']},
+  {id:'design', label:'Design & UI',    color:'#A78BFA', skills:['UX copy','research','a11y','handoff']},
+  {id:'sales',  label:'Sales',          color:'#FB923C', skills:['outreach','call prep','battlecard','pipeline']},
+  {id:'ops',    label:'Operations',     color:'#FBBF24', skills:['status','runbook','risk','process']},
+  {id:'eng',    label:'Engineering',    color:'#22D3EE', skills:['MCP server','AI agents','skills','artifacts']},
+  {id:'prod',   label:'Productivity',   color:'#F472B6', skills:['tasks','memory','schedule']},
+  {id:'obs',    label:'Obsidian',       color:'#8B5CF6', skills:['vault CLI','canvas','bases','defuddle']},
+];
+
+let nodes=[], edges=[], particles=[], t=0, hovered=null, queryActive=false, autoTimer=0;
+
+// Stars
+const STARS = Array.from({length:200}, ()=>({
+  x:Math.random(), y:Math.random(),
+  r:Math.random()*1.3+0.2,
+  phase:Math.random()*Math.PI*2,
+  spd:Math.random()*0.0008+0.0003,
+}));
+
+function resize(){
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+  cx = W/2; cy = H/2 + 15;
+  R_CAT = Math.min(W,H) * 0.22;
+  R_SKILL = Math.min(W,H) * 0.40;
+  build();
+}
+
+function build(){
+  nodes=[]; edges=[];
+  nodes.push({id:'claude', x:cx, y:cy, r:44, type:'center', label:'Claude', color:CC, glow:1, pulse:0});
+
+  CATS.forEach((cat,i)=>{
+    const a = -Math.PI/2 + (i/CATS.length)*Math.PI*2;
+    const nx = cx + R_CAT*Math.cos(a);
+    const ny = cy + R_CAT*Math.sin(a);
+    nodes.push({id:cat.id, x:nx, y:ny, r:20, type:'cat', label:cat.label,
+      color:cat.color, angle:a, glow:0.5, pulse:0, i});
+    edges.push({from:cat.id, to:'claude', color:cat.color});
+
+    const spread = 0.32;
+    cat.skills.forEach((sk,j)=>{
+      const sa = a + (j/(cat.skills.length-1||1) - 0.5)*spread;
+      const sid = cat.id+'_'+j;
+      nodes.push({id:sid, x:cx+R_SKILL*Math.cos(sa), y:cy+R_SKILL*Math.sin(sa),
+        r:10, type:'skill', label:sk, color:cat.color, angle:sa, glow:0.3, pulse:0,
+        parent:cat.id, catI:i});
+      edges.push({from:sid, to:cat.id, color:cat.color});
+    });
+  });
+}
+
+resize();
+window.addEventListener('resize', ()=>{resize();});
+
+function node(id){ return nodes.find(n=>n.id===id); }
+
+function spawnParticle(fid, tid, color, spd=1){
+  const f=node(fid), to=node(tid);
+  if(!f||!to) return;
+  particles.push({fx:f.x,fy:f.y,tx:to.x,ty:to.y,t:0,spd:0.007*spd,
+    color, sz:2+Math.random()*1.5});
+}
+
+function triggerQuery(skillId){
+  if(queryActive) return;
+  queryActive=true;
+  const sk=node(skillId);
+  if(!sk||sk.type!=='skill') return;
+  const catId=sk.parent;
+  const cn=node(catId);
+  sk.glow=2.5;
+
+  for(let i=0;i<8;i++) setTimeout(()=>spawnParticle(skillId,catId,sk.color,1.4),i*60);
+  setTimeout(()=>{
+    if(cn) cn.glow=2;
+    for(let i=0;i<8;i++) setTimeout(()=>spawnParticle(catId,'claude',sk.color,1.4),i*60);
+  },550);
+  setTimeout(()=>{
+    const cl=node('claude');
+    if(cl){cl.pulse=1.5;cl.glow=2.8;}
+    statusEl.textContent=`Skill resolved: "${sk.label}" → ${CATS.find(c=>c.id===catId)?.label} → Claude`;
+    statusEl.className='active';
+  },1100);
+  setTimeout(()=>{
+    queryActive=false;
+    statusEl.textContent='Hover to explore · Click a skill to trigger a lookup';
+    statusEl.className='';
+  },3800);
+}
+
+// Ambient particle spawner
+let ambTimer=0;
+function ambient(){
+  const skills=nodes.filter(n=>n.type==='skill');
+  const sk=skills[Math.floor(Math.random()*skills.length)];
+  if(sk) spawnParticle(sk.id,sk.parent,sk.color,0.6);
+  if(Math.random()<0.25){
+    const cats=nodes.filter(n=>n.type==='cat');
+    const ct=cats[Math.floor(Math.random()*cats.length)];
+    if(ct) spawnParticle(ct.id,'claude',ct.color,0.6);
+  }
+}
+
+function drawEdge(f,to,color,alpha){
+  ctx.save();
+  ctx.globalAlpha=alpha;
+  ctx.strokeStyle=color;
+  ctx.lineWidth=0.8;
+  ctx.shadowColor=color;
+  ctx.shadowBlur=alpha>0.4?8:0;
+  ctx.beginPath();
+  ctx.moveTo(f.x,f.y);
+  ctx.lineTo(to.x,to.y);
+  ctx.stroke();
+  ctx.restore();
+}
+
+function glow(x,y,r,color,str){
+  const g=ctx.createRadialGradient(x,y,r*0.1,x,y,r*2.5*str);
+  g.addColorStop(0,color+'BB');
+  g.addColorStop(0.5,color+'33');
+  g.addColorStop(1,color+'00');
+  ctx.fillStyle=g;
+  ctx.beginPath();
+  ctx.arc(x,y,r*2.5*str,0,Math.PI*2);
+  ctx.fill();
+}
+
+function drawNode(n){
+  const isH=hovered===n.id;
+  const pulse=1+Math.sin(t*1.8+(n.i||0)*0.9)*0.05;
+  const r=n.r*pulse;
+  const gl=n.glow+(isH?0.8:0)+n.pulse*0.5;
+
+  glow(n.x,n.y,r,n.color,gl*0.45);
+
+  if(n.type!=='skill'){
+    ctx.save();
+    ctx.strokeStyle=n.color+'55';
+    ctx.lineWidth=1;
+    ctx.beginPath();
+    ctx.arc(n.x,n.y,r+5,0,Math.PI*2);
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  ctx.save();
+  ctx.shadowColor=n.color;
+  ctx.shadowBlur=12*gl;
+  const g=ctx.createRadialGradient(n.x,n.y,0,n.x,n.y,r);
+  if(n.type==='center'){
+    g.addColorStop(0,'#fff5f0');
+    g.addColorStop(0.45,CC);
+    g.addColorStop(1,'#7a3018');
+  } else {
+    g.addColorStop(0,n.color+'EE');
+    g.addColorStop(1,n.color+'55');
+  }
+  ctx.fillStyle=g;
+  ctx.beginPath();
+  ctx.arc(n.x,n.y,r,0,Math.PI*2);
+  ctx.fill();
+  ctx.restore();
+
+  if(n.type==='center'){
+    drawClaudeIcon(n.x,n.y,r);
+  } else if(n.type==='cat'){
+    const dist=r+18;
+    const lx=n.x+Math.cos(n.angle)*dist;
+    const ly=n.y+Math.sin(n.angle)*dist;
+    ctx.save();
+    ctx.font='600 10px Inter,sans-serif';
+    ctx.textAlign='center';
+    ctx.textBaseline='middle';
+    const tw=ctx.measureText(n.label).width;
+    ctx.fillStyle='rgba(8,8,15,0.75)';
+    const pad=5;
+    ctx.beginPath();
+    ctx.roundRect(lx-tw/2-pad,ly-8,tw+pad*2,16,3);
+    ctx.fill();
+    ctx.fillStyle='#fff';
+    ctx.shadowColor=n.color;
+    ctx.shadowBlur=6;
+    ctx.fillText(n.label,lx,ly);
+    ctx.restore();
+  } else {
+    const dist=r+13;
+    const lx=n.x+Math.cos(n.angle)*dist;
+    const ly=n.y+Math.sin(n.angle)*dist;
+    ctx.save();
+    ctx.font='500 9px Inter,sans-serif';
+    ctx.textAlign='center';
+    ctx.textBaseline='middle';
+    ctx.fillStyle=isH||hovered===n.parent?'#fff':n.color+'CC';
+    ctx.fillText(n.label,lx,ly);
+    ctx.restore();
+  }
+}
+
+function drawClaudeIcon(x,y,r){
+  // Stylised Claude logomark — four tapered petals
+  ctx.save();
+  ctx.translate(x,y-7);
+  const s=r*0.48;
+  ctx.lineCap='round';
+  for(let i=0;i<4;i++){
+    const a=(i/4)*Math.PI*2-Math.PI/4;
+    ctx.beginPath();
+    ctx.lineWidth=3.5-Math.abs(Math.sin(a))*0.5;
+    ctx.strokeStyle='rgba(255,255,255,0.95)';
+    ctx.shadowColor='#fff';
+    ctx.shadowBlur=6;
+    ctx.moveTo(0,0);
+    ctx.lineTo(Math.cos(a)*s,Math.sin(a)*s);
+    ctx.stroke();
+  }
+  ctx.restore();
+  ctx.save();
+  ctx.font='700 12px Inter,sans-serif';
+  ctx.textAlign='center';
+  ctx.textBaseline='middle';
+  ctx.fillStyle='#fff';
+  ctx.shadowColor='rgba(255,255,255,0.5)';
+  ctx.shadowBlur=4;
+  ctx.fillText('Claude',x,y+10);
+  ctx.restore();
+}
+
+function drawParticle(p){
+  const px=p.fx+(p.tx-p.fx)*p.t;
+  const py=p.fy+(p.ty-p.fy)*p.t;
+  ctx.save();
+  const g=ctx.createRadialGradient(px,py,0,px,py,p.sz*2);
+  g.addColorStop(0,p.color+'FF');
+  g.addColorStop(1,p.color+'00');
+  ctx.fillStyle=g;
+  ctx.shadowColor=p.color;
+  ctx.shadowBlur=10;
+  ctx.beginPath();
+  ctx.arc(px,py,p.sz,0,Math.PI*2);
+  ctx.fill();
+  ctx.restore();
+}
+
+// Interaction
+canvas.addEventListener('mousemove',e=>{
+  const {left,top}=canvas.getBoundingClientRect();
+  const mx=e.clientX-left, my=e.clientY-top;
+  hovered=null;
+  for(const n of nodes){
+    if(Math.hypot(mx-n.x,my-n.y)<n.r+10){hovered=n.id;break;}
+  }
+  if(hovered){
+    const n=node(hovered);
+    if(n?.type==='skill') statusEl.textContent=`Skill: ${n.label} · click to demo lookup`;
+    else if(n?.type==='cat') statusEl.textContent=`${n.label} · ${CATS.find(c=>c.id===n.id)?.skills.length} skills`;
+    else statusEl.textContent='71 skills · 8 categories · semantic lookup';
+  } else {
+    statusEl.textContent='Hover to explore · Click a skill to trigger a lookup';
+  }
+});
+
+canvas.addEventListener('click',e=>{
+  const {left,top}=canvas.getBoundingClientRect();
+  const mx=e.clientX-left, my=e.clientY-top;
+  for(const n of nodes){
+    if(n.type==='skill'&&Math.hypot(mx-n.x,my-n.y)<n.r+10){
+      triggerQuery(n.id); return;
+    }
+  }
+});
+
+// Pulse rings radiating from Claude center
+let ringPhase=0;
+function drawRings(cl){
+  if(cl.pulse<0.05) return;
+  ringPhase+=0.025;
+  for(let i=0;i<3;i++){
+    const p=((ringPhase+i*0.33)%1);
+    ctx.save();
+    ctx.globalAlpha=(1-p)*cl.pulse*0.35;
+    ctx.strokeStyle=CC;
+    ctx.lineWidth=1.5;
+    ctx.beginPath();
+    ctx.arc(cl.x,cl.y,cl.r+p*90,0,Math.PI*2);
+    ctx.stroke();
+    ctx.restore();
+  }
+}
+
+function draw(){
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle='#08080f';
+  ctx.fillRect(0,0,W,H);
+
+  // Stars
+  for(const s of STARS){
+    s.phase+=s.spd;
+    ctx.save();
+    ctx.globalAlpha=0.5+Math.sin(s.phase)*0.35;
+    ctx.fillStyle='#fff';
+    ctx.beginPath();
+    ctx.arc(s.x*W,s.y*H,s.r,0,Math.PI*2);
+    ctx.fill();
+    ctx.restore();
+  }
+
+  t+=0.016;
+
+  // Ambient particles
+  ambTimer++;
+  if(ambTimer%20===0) ambient();
+
+  // Auto-query every ~7s
+  autoTimer++;
+  if(autoTimer>420&&!queryActive){
+    autoTimer=0;
+    const skills=nodes.filter(n=>n.type==='skill');
+    triggerQuery(skills[Math.floor(Math.random()*skills.length)].id);
+  }
+
+  // Edges
+  for(const e of edges){
+    const f=node(e.from), to=node(e.to);
+    if(!f||!to) continue;
+    const hi=hovered===e.from||hovered===e.to;
+    drawEdge(f,to,e.color,hi?0.65:0.18);
+  }
+
+  // Particles
+  particles=particles.filter(p=>p.t<1);
+  for(const p of particles){p.t+=p.spd;drawParticle(p);}
+
+  // Nodes: skills → cats → center
+  for(const type of ['skill','cat','center']){
+    for(const n of nodes.filter(n=>n.type===type)){
+      n.pulse=Math.max(0,n.pulse-0.018);
+      const base=type==='center'?1:type==='cat'?0.5:0.3;
+      n.glow=Math.max(base,n.glow-0.012);
+      drawNode(n);
+    }
+  }
+
+  drawRings(node('claude'));
+  requestAnimationFrame(draw);
+}
+
+draw();
+</script>
+</body>
+</html>
