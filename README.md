@@ -7,15 +7,15 @@
 
 ## What This Is
 
-Claude has access to hundreds of skills — specialised tools for writing documents, analysing data, running SQL, managing projects, building agents, and more. The problem is discovery: how does Claude know which skill to reach for, without pre-loading every skill definition into every conversation?
+Claude has access to hundreds of skills specialised tools for writing documents, analysing data, running SQL, managing projects, building agents, and more. The problem is discovery: how does Claude know which skill to reach for, without pre-loading every skill definition into every conversation?
 
-This vault solves that problem. It is Claude's reference brain — authored by humans, optimised for Claude to read quickly at conversation start. It is not a general-purpose personal knowledge base. Every note in this vault exists to help Claude do its job better.
+This vault solves that problem. It is Claude's reference brain authored by humans, optimised for Claude to read quickly at conversation start. It is not a general-purpose personal knowledge base. Every note in this vault exists to help Claude do its job better.
 
 ---
 
 ## The Problem It Addresses
 
-Pre-loading all 128+ skills into every Claude conversation costs thousands of tokens before the first useful word is written. It also creates ambiguity — when everything is loaded, nothing is prioritised.
+Pre-loading all 128+ skills into every Claude conversation costs thousands of tokens before the first useful word is written. It also creates ambiguity —when everything is loaded, nothing is prioritised.
 
 Most community patterns for AI-assisted PKM follow the rule: **human thinking goes in the vault, Claude outputs go in `~/.claude/`**. This vault consciously inverts that pattern. Skill definitions are the primary content here. Claude's session memory, working plans, and task outputs live elsewhere.
 
